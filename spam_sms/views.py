@@ -1,5 +1,5 @@
 from django.shortcuts import render
 
 # Create your views here.
-def spam_sms(request):
-    return render(request, 'spam_sms.html', {})
+def home(request):
+    return render(request, "home.html")
