@@ -1,5 +1,50 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 {% block page_content %}
-<h1>Hello, World!</h1>
+{% load static%}
+    
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Beranda</h1>
+                    </div> -->
+
+
+                    <!-- Content Row -->
+                    <div class="row">
+                            <!-- Approach -->
+                            <div class="card shadow col-lg-12 mb-4">
+                                <div class="card-body">
+                                    <center><h3 class="card-title">NORMALISASI TEKS PADA SMS SPAM BERBAHASA INDONESIA DENGAN MENGGUNAKAN <i>RULE BASED</i> DAN <i>ALGORITMA LAVENSTEIN DISTANCE</i></h3></center>
+                                    <center><img src="{% static 'img/logo-usu.png'%}" width="400px" height="400px" alt="image"></center>
+                                    <center><h5 class="card-title">Mayang Dyah Azurah</h5></center>
+                                    <center><h5 class="card-title">161402050</h5></center>
+                                </div>
+                            </div>
+
+                        
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy;2021</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
 {% endblock %}
