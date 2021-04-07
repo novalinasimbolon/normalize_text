@@ -14,3 +14,9 @@ def bacafile(sms):
     
     lower_case = punctuation_remove2.str.lower()    
     return lower_case
+
+def tokenizing(sms):
+    result = []
+    for sentence in sms:
+        result.append(sentence.split())
+    return result
