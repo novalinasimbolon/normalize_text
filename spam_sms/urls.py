@@ -5,5 +5,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('', views.data, name='data'),
     path('', views.proses, name='proses'),
-    path('', views.token, name='token'),
+    path('', views.normalisasi, name='normalisasi'),
 ]

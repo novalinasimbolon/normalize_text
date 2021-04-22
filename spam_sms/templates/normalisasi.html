@@ -7,7 +7,7 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Data Token</h1>
-                    </div>
+                    </div> 
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
@@ -20,14 +20,16 @@
                 <thead class="table-active">
                     <tr>
                         <th>SMS Spam</th>
+                        <th>SMS SPAM (rule based)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{{% for row in result%}
+                    {% for row in result%}
                     <tr>
-                        <td>{{row}}</td>
+                        <td>{{row.1}}</td>
+                        <td>{{row.2}}</td>
                     </tr>
-                    {% endfor %}}}
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

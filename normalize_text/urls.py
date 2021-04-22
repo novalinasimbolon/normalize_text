@@ -23,5 +23,5 @@ urlpatterns = [
     url(r'^$', views.home, name='home'),
     path('data/', views.data, name='data'),
     path('proses/', views.proses, name='proses'),
-    path('token/', views.token, name='token'),
+    path('normalisasi/', views.normalisasi, name='normalisasi'),
 ]
