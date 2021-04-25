@@ -44,9 +44,11 @@ def proses(request):
     df = pd.read_sql("select * from spam_sms_normalize", engine)
     spam_sms = df["sms_spam"]
     preproses_sms = preproses.bacafile(spam_sms)
+    rulebased_sms = preproses.rule_based(preproses_sms)
     id_sms = df["id"]
 
-    dict = {'id': id_sms, 'spam_sms': spam_sms, 'preproses_sms': preproses_sms}
+    dict = {'id': id_sms, 'spam_sms': spam_sms,
+            'preproses_sms': preproses_sms, 'rulebased_sms': rulebased_sms}
     df = pd.DataFrame(dict)
 
     df.to_sql('preproses', con=engine, if_exists='replace', index=False)
@@ -71,14 +73,14 @@ def proses(request):
 def normalisasi(request):
     engine = create_engine('mysql+pymysql://root:@localhost/normalize_text')
     df = pd.read_sql("select * from preproses", engine)
-    preproses_sms = df["preproses_sms"]
-    rulebased_sms = preproses.rule_based(preproses_sms)
-    # disini tambahkan proses levenshtein
-    spam_sms = df["spam_sms"]
     id_sms = df["id"]
+    spam_sms = df["spam_sms"]
+    preproses_sms = df["preproses_sms"]
+    rulebased_sms = df["rulebased_sms"]
+    normalisasi_sms = preproses.normalisasi(rulebased_sms)
 
     dict = {'id': id_sms, 'spam_sms': spam_sms,
-            'preproses_sms': preproses_sms, 'rulebased': rulebased_sms}
+            'preproses_sms': preproses_sms, 'rulebased_sms': rulebased_sms, 'normalisasi_sms': normalisasi_sms}
     # dict = {'id': id_sms, 'sms_spam': sms}
     df = pd.DataFrame(dict)
 
@@ -97,4 +99,4 @@ def normalisasi(request):
     cursor.execute(sql)
 
     result = cursor.fetchall()
-    return render(request, "normalisasi.html", {'result': result})
+    return render(request, "normalisasi.html", {'result': normalisasi_sms})

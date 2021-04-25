@@ -81,7 +81,7 @@ def calcDictDistance(word, numWords):
                                 "-" + post['lema'].strip())
             wordIdx = wordIdx + 1
 
-        closestWords = []
+        # closestWords = []
         wordDetails = []
         currWordDist = 0
         dictWordDist.sort()
@@ -89,8 +89,8 @@ def calcDictDistance(word, numWords):
         for i in range(numWords):
             currWordDist = dictWordDist[i]
             wordDetails = currWordDist.split("-")
-            closestWords.append(wordDetails[1])
-        return closestWords
+            # closestWords.append(wordDetails[1])
+        return wordDetails[1]
 
 
 def rule_based(text):
@@ -102,16 +102,18 @@ def rule_based(text):
     tujuh_replace = lima_replace.str.replace('7', 'j')
     tiga_replace = tujuh_replace.str.replace('3', 'e')
     satu_replace = tiga_replace.str.replace('1', 'i')
-    as_replace = satu_replace.str.replace('ass', 'assalammualaikum')
+    as_replace = satu_replace.str.replace('ass', 'assalamualaikum')
     remove_number = as_replace.str.replace('\d+', ' ')
 
     single_char = r'\b[a-zA-Z]\b'
     single_char_replace = remove_number.str.replace(single_char, ' ')
+    double_white_space = single_char_replace.str.replace('\s+', ' ')
 
-    return single_char_replace
+    return double_white_space
 
 
 def normalisasi(sms):
-    normal = []
-    normal.append(sms)
-    return normal
+    token = nltk.word_tokenize(str(sms))
+    normal_word = [calcDictDistance(item, 1) for item in token]
+
+    return normal_word
