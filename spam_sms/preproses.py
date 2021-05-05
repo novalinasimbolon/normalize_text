@@ -4,6 +4,9 @@ import re
 import requests
 import json
 import numpy
+import pandas as pd
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 
 
 def bacafile(sms):
@@ -64,6 +67,21 @@ def levenshteinDistanceDP(token1, token2):
     return distances[len(token1)][len(token2)]
 
 
+def checker(wrong_options, correct_options):
+    names_array = []
+    ratio_array = []
+    for wrong_option in wrong_options:
+        if wrong_option in correct_options:
+            names_array.append(wrong_option)
+            ratio_array.append('100')
+        else:
+            x = process.extractOne(
+                wrong_option, correct_options, scorer=fuzz.token_set_ratio)
+            names_array.append(x[0])
+            ratio_array.append(x[1])
+    return names_array, ratio_array
+
+
 def calcDictDistance(word, numWords):
     file = open('../kateglo.json', 'r')
     lines = file.readlines()
@@ -107,13 +125,39 @@ def rule_based(text):
 
     single_char = r'\b[a-zA-Z]\b'
     single_char_replace = remove_number.str.replace(single_char, ' ')
-    double_white_space = single_char_replace.str.replace('\s+', ' ')
+    # double_white_space = single_char_replace.str.replace('\s+', ' ')
+    clean_space = single_char_replace.str.replace('\ufeff', '')
+    clean_space = clean_space.str.replace('\n', ' ')
+    clean_space = clean_space.str.replace('\r', ' ')
+    clean_space = clean_space.str.replace('\n\n', ' ')
+    clean_space = clean_space.str.replace('\r\r', ' ')
 
-    return double_white_space
+    return clean_space
 
 
 def normalisasi(sms):
-    token = nltk.word_tokenize(str(sms))
-    normal_word = [calcDictDistance(item, 1) for item in token]
+    for row in sms:
+        tweet_tokens = nltk.word_tokenize(row[3])
+        tweet_tokens
+        normal_text = []
+        for word in tweet_tokens:
+            normal_text.append(calcDictDistance(word, 1))
+            normal_text.append(" ")
+            # result = "".join(normal_text)
+        return "".join(normal_text)
 
-    return normal_word
+    # result = []
+    # for sentence in sms:
+    #     normal_word = calcDictDistance(sentence, 1)
+    #     # word = nltk.word_tokenize(sentence)
+    #     result.append(normal_word)
+
+    # result = []
+    # for item in sms:
+    #     word = nltk.word_tokenize(item)
+    #     result.append(word)
+    # return result
+
+    # token = nltk.word_tokenize(str(sms))
+    # normal_word = [calcDictDistance(item, 1) for item in token]
+    # result = [' '.join(str(item) for item in normal_word)]

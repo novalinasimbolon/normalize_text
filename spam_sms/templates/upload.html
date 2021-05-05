@@ -27,7 +27,7 @@
                 <span>Beranda</span></a>
         </li>
 
-        <li class="nav-item  active">
+        <li class="nav-item">
             <a class="nav-link" href="{% url 'data' %}">
                 <i class="fas fa-fw fa-database"></i>
                 <span>Data</span></a>
@@ -45,12 +45,11 @@
                 <span>Normalisasi</span></a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item  active">
             <a class="nav-link" href="{% url 'upload' %}">
                 <i class="fas fa-fw fa-file"></i>
                 <span>Upload File</span></a>
         </li>
-        
         <!-- <li class="nav-item">
             <a class="nav-link" href="akurasi.html">
                 <i class="fas fa-fw fa-percentage"></i>
@@ -109,26 +108,19 @@
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Keseluruhan Data</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Upload Data</h6>
     </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>SMS Spam</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in result%}
-                    <tr>
-                        <td>{{row.2}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    
+
+    <form action = "http://127.0.0.1:8000/uploader" method = "POST" 
+    enctype = "multipart/form-data">
+    <input type = "file" name = "file" />
+    <input type = "submit"/>
+ </form>
+
+
+
+
 </div>
 
                 <!-- /.container-fluid -->

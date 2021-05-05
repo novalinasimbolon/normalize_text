@@ -24,4 +24,5 @@ urlpatterns = [
     path('data/', views.data, name='data'),
     path('proses/', views.proses, name='proses'),
     path('normalisasi/', views.normalisasi, name='normalisasi'),
+    path('upload/', views.upload, name='upload'),
 ]
