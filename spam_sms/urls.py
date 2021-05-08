@@ -6,4 +6,5 @@ urlpatterns = [
     path('', views.data, name='data'),
     path('', views.proses, name='proses'),
     path('', views.normalisasi, name='normalisasi'),
+    path('', views.upload, name='upload'),
 ]

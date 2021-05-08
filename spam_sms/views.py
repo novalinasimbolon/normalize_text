@@ -25,7 +25,7 @@ def data(request):
     connection = pymysql.connect(host='localhost',
                                  user='root',
                                  password='',
-                                 db='normalize_text')
+                                 db='normal')
 
     # create cursor
     cursor = connection.cursor()
@@ -40,7 +40,7 @@ def data(request):
 
 
 def proses(request):
-    engine = create_engine('mysql+pymysql://root:@localhost/normalize_text')
+    engine = create_engine('mysql+pymysql://root:@localhost/normal')
     df = pd.read_sql("select * from spam_sms_normalize", engine)
     spam_sms = df["sms_spam"]
     preproses_sms = preproses.bacafile(spam_sms)
@@ -56,7 +56,7 @@ def proses(request):
     connection = pymysql.connect(host='localhost',
                                  user='root',
                                  password='',
-                                 db='normalize_text')
+                                 db='normal')
 
     # create cursor
     cursor = connection.cursor()
@@ -119,57 +119,99 @@ def normalisasi(request):
     connection = pymysql.connect(host='localhost',
                                  user='root',
                                  password='',
-                                 db='normalize_text')
+                                 db='normal')
 
     # create cursor
     cursor = connection.cursor()
 
-# udah bisa
-    # Execute query
-    sql = "SELECT * FROM `preproses`"
+# # udah bisa
+#     # Execute query
+#     sql = "SELECT * FROM `preproses`"
+#     cursor.execute(sql)
+
+#     result = cursor.fetchall()
+#     normalisasi_sms = []
+#     spam_sms = []
+
+#     for row in result:
+#         spam_sms.append(row[1])
+#         sms_tokens = nltk.word_tokenize(row[3])
+#         sms_tokens
+#         normal_text = []
+#         for word in sms_tokens:
+#             normal_text.append(preproses.calcDictDistance(word, 1))
+#             normal_text.append(" ")
+#             # result = "".join(normal_text)
+#         ntext = "".join(normal_text)
+#         normalisasi_sms.append(ntext)
+
+#     df = pd.DataFrame()
+#     df['spam_sms'] = spam_sms
+#     df['normalisasi_sms'] = normalisasi_sms
+
+#     dict = {'spam_sms': df['spam_sms'],
+#             'normalisasi_sms': df['normalisasi_sms']}
+#     df = pd.DataFrame(dict)
+#     engine = create_engine('mysql+pymysql://root:@localhost/normal')
+#     df.to_sql('normalisasi', con=engine, if_exists='replace', index=False)
+
+    cursor = connection.cursor()
+    sql = "SELECT * FROM `normalisasi`"
     cursor.execute(sql)
 
     result = cursor.fetchall()
-    normalisasi_sms = []
-    spam_sms = []
-
-    for row in result:
-        spam_sms.append(row[1])
-        sms_tokens = nltk.word_tokenize(row[3])
-        sms_tokens
-        normal_text = []
-        for word in sms_tokens:
-            normal_text.append(preproses.calcDictDistance(word, 1))
-            normal_text.append(" ")
-            # result = "".join(normal_text)
-        ntext = "".join(normal_text)
-        normalisasi_sms.append(ntext)
-
-    df = pd.DataFrame()
-    df['spam_sms'] = spam_sms
-    df['normalisasi_sms'] = normalisasi_sms
-
-    dict = {'spam_sms': df['spam_sms'],
-            'normalisasi_sms': df['normalisasi_sms']}
-    df = pd.DataFrame(dict)
-    engine = create_engine('mysql+pymysql://root:@localhost/normalize_text')
-    df.to_sql('normalisasi', con=engine, if_exists='replace', index=False)
-
-    # cursor = connection.cursor()
-    # sql = "SELECT * FROM `normalisasi`"
-    # cursor.execute(sql)
-
-    # result = cursor.fetchall()
 
     return render(request, "normalisasi.html", {'result': result})
 
 
 def upload(request):
-    return render(request, "upload.html")
-
-
-def upload_file():
+    lema = []
+    normalisasi_sms = []
     if request.method == 'POST':
-        f = request.files['file']
-        f.save(secure_filename(f.filename))
-        return 'file uploaded successfully'
+        file = request.FILES['file']
+        # data = file.read()
+        # obj = json.loads(data)
+        rslt = pd.read_json(file)
+        hh = rslt['rulebased_sms']
+        # df = pd.DataFrame()
+        # df['rulebased_sms'] = hh
+        # hew = df['rulebased_sms']
+        yy = preproses.bacafile(hh)
+        zz = preproses.rule_based(yy)
+        df = pd.DataFrame()
+
+        df['spam_sms'] = hh
+        df['rulebased_sms'] = zz
+
+        dict = {'spam_sms': df['spam_sms'],
+                'rulebased_sms': df['rulebased_sms']}
+        df = pd.DataFrame(dict)
+        engine = create_engine('mysql+pymysql://root:@localhost/normal')
+        df.to_sql('upload', con=engine, if_exists='replace', index=False)
+
+        connection = pymysql.connect(host='localhost',
+                                     user='root',
+                                     password='',
+                                     db='normal')
+
+        # create cursor
+        cursor = connection.cursor()
+
+        cursor = connection.cursor()
+        sql = "SELECT * FROM `upload`"
+        cursor.execute(sql)
+
+        result = cursor.fetchall()
+        for row in result:
+            sms_tokens = nltk.word_tokenize(row[1])
+            sms_tokens
+            normal_text = []
+            for word in sms_tokens:
+                normal_text.append(preproses.calcDictDistance(word, 1))
+                normal_text.append(" ")
+                # result = "".join(normal_text)
+            ntext = "".join(normal_text)
+            normalisasi_sms.append(ntext)
+            # print(ntext)
+        # lema.append(zz)
+    return render(request, "upload.html", {'result': normalisasi_sms})

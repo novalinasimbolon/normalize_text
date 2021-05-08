@@ -65,10 +65,9 @@
     </ul>
     <!-- End of Sidebar -->
 
-        <!-- Page Wrapper -->
-        <div id="wrapper">
+
             <!-- Content Wrapper -->
-            <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content-wrapper" >
     
                 <!-- Main Content -->
                 <div id="content">
@@ -97,36 +96,79 @@
 
                 </div>
 <!-- End of Page Wrapper -->
-    
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Data</h1>
-                    </div>
 
-<!-- DataTales Example -->
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Upload Data</h6>
-    </div>
-    
-
-    <form action = "http://127.0.0.1:8000/uploader" method = "POST" 
-    enctype = "multipart/form-data">
-    <input type = "file" name = "file" />
-    <input type = "submit"/>
- </form>
-
-
-
-
-</div>
-
-                <!-- /.container-fluid -->
-
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h1 class="page-title"> Normalisasi Data</h1>
+              <div class="row">
+                      <div class="col-lg-12">
+                          <hr>
+                          <section id="about">
+                              <br></br>
+                              <br></br>
+                            
+                              <div class="container">
+                                <div class="row">
+                                  <div class="col-lg-12 mx-auto" style="text-align:center;">
+                                    <div class="card">
+                                        <br><br>
+                                        <form  method="POST" enctype = "multipart/form-data">
+                                            {% csrf_token %}
+                                                <input type = "file" name = "file" />
+                                                <input type = "submit" class="btn btn-secondary btn-sm" value= "Proses"/>
+                                            </form>
+                                            <br><br>
+                                    </div>
+                                    <br></br>
+                                       <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <i class="fa fa-table"></i> Data
+                                        </div>
+                                        <!-- /.panel-heading -->
+                                        <div class="panel-body">
+                                            <table width="100%" class="table table-bordered table-hover table-responsive" id="dataTables-example">
+                                                <thead class="table-active">
+                                                    <tr>
+                                                      <th>Kateglo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                  {% for pair in result %}
+                                                  <tr>
+                                                  <td>{{pair}}</td>
+                                                  </tr>
+                                                  {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <!-- /.table-responsive -->
+                                        </div>
+                                        <!-- /.panel-body -->
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                        
+                              <br></br>
+                            </section>
+                          <!-- /.panel -->
+                     
+                      <!-- /.col-lg-12 -->
+                  </div>
+              </div>
             </div>
-            <!-- End of Main Content -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+    <!-- partial -->
+  </div>
+    
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
@@ -140,8 +182,5 @@
 
         </div>
         <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
 
 {% endblock %}
